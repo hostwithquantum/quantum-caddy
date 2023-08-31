@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  caddy_test:
+    image: containous/whoami
+    networks:
+      - public
+    labels:
+      caddy: caddy-whoami.${QUANTUM_ENDPOINT}.customer.planetary-quantum.net
+      caddy.reverse_proxy: "{{upstreams 80}}"
+
+networks:
+  public:
+    external: true

@@ -1,0 +1,7 @@
+---
+version: 1.0
+compose: docker-compose.yml
+
+environments:
+- name: test
+  compose: stack.yml
