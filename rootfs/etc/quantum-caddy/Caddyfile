@@ -1,0 +1,23 @@
+{
+	debug
+	admin localhost:2019
+	log default {
+		output stdout
+		format console
+		include http.log.access admin.api
+	}
+	servers {
+		metrics
+	}
+}
+
+# admin-ui host
+# {$ADMIN_UI_URL} {
+# 	# @blocked not remote_ip 178.23.120.12
+# 	# respond @blocked "<h1>Access Denied</h1>" 403
+# 	route {
+# 		reverse_proxy localhost:2019 {
+# 			header_up Host localhost:2019
+# 		}
+# 	}
+# }

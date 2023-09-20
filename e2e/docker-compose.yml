@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  proxy:
+    image: r.planetary-quantum.com/quantum-public/caddy:dev
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    environment:
+      - "S3_BUCKET="
+      - "S3_ACCESS_ID="
+      - "S3_SECRET_KEY="
+      - ADMIN_UI_URL=${ADMIN_UI_URL}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - caddy-data:/data # FIXME
+    labels:
+      # this is global
+      - 'caddy.email=till@lagged.biz' # FIXME
+    deploy:
+      mode: global
+      placement:
+        constraints: 
+          - node.role == manager
+    networks:
+      - public
+
+volumes:
+  caddy-data:
+
+networks:
+  public:
+    external: true
