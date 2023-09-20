@@ -1,10 +1,10 @@
-FROM caddy:2.6.4-builder as builder
+FROM caddy:2.7.4-builder as builder
 
 RUN xcaddy build \
     --with github.com/ss098/certmagic-s3 \
     --with github.com/lucaslorentz/caddy-docker-proxy@v2.8.4
 
-FROM caddy:2.6.4
+FROM caddy:2.7.4
 
 LABEL org.opencontainers.image.description "A Caddy reverse proxy with s3 storage for certmagic, service discovery via labels"
 
