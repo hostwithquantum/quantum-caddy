@@ -16,7 +16,7 @@ jobs:
         username: ${{ secrets.QUANTUM_REGISTRY_USERNAME }}
         password: ${{ secrets.QUANTUM_REGISTRY_PASSWORD }}
     - id: meta
-      uses: docker/metadata-action@v4
+      uses: docker/metadata-action@v5
       with:
         images: r.planetary-quantum.com/quantum-public/${{ github.repository }}
     - uses: docker/build-push-action@v5

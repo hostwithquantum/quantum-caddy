@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - id: meta
-      uses: docker/metadata-action@v4
+      uses: docker/metadata-action@v5
       with:
         images: r.planetary-quantum.com/quantum-public/${{ github.repository }}
     - uses: docker/build-push-action@v5
