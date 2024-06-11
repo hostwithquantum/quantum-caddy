@@ -9,6 +9,22 @@
 	servers {
 		metrics
 	}
+
+	@s3storage {
+		storage s3 {
+			s3_force_path_style true
+			endpoint {env.AWS_ENDPOINT}
+			bucket {env.AWS_BUCKET}
+			region us-east-1
+			access_key_id {env.AWS_ACCESS_KEY_ID}
+			secret_access_key {env.AWS_SECRET_ACCESS_KEY}
+		}
+	}
+
+	# conditionally enable s3-certmagic only when AWS_ACCESS_KEY_ID is set
+	{if {env.AWS_ACCESS_KEY_ID} {len} > 0} {
+		import @s3storage
+	}
 }
 
 # cors import

@@ -8,14 +8,11 @@ FROM caddy:2.8.4
 
 LABEL org.opencontainers.image.description "A Caddy reverse proxy with s3 storage for certmagic, service discovery via labels"
 
-ENV S3_BUCKET ""
-ENV S3_ACCESS_ID ""
-ENV S3_SECRET_KEY ""
+ENV AWS_ENDPOINT=https://s3.storage.planetary-networks.de
 
-# optional
-ENV S3_HOST "s3.storage.planetary-networks.de"
-ENV S3_PREFIX ""
-ENV S3_INSECURE "false"
+ENV AWS_BUCKET=""
+ENV AWS_ACCESS_KEY_ID=""
+ENV AWS_SECRET_ACCESS_KEY=""
 
 WORKDIR /
 ADD . .
