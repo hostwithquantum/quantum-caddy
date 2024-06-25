@@ -11,6 +11,35 @@
 	}
 }
 
+(cors-origin) {
+	@match-cors-preflight-{args.0} {
+		header Origin "{args.0}"
+		method OPTIONS
+	}
+	handle @match-cors-preflight-{args.0} {
+		header {
+			Access-Control-Allow-Origin "{args.0}"
+			Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+			Access-Control-Allow-Headers *
+			Access-Control-Max-Age "3600"
+			defer
+		}
+		respond "" 204
+	}
+
+	@match-cors-request-{args.0} {
+		header Origin "{args.0}"
+		not method OPTIONS
+	}
+	handle @match-cors-request-{args.0} {
+		header {
+			Access-Control-Allow-Origin "{http.request.header.origin}"
+			Access-Control-Expose-Headers *
+			defer
+		}
+	}
+}
+
 # admin-ui host
 # {$ADMIN_UI_URL} {
 # 	# @blocked not remote_ip 178.23.120.12
