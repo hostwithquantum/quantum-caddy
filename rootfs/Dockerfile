@@ -2,7 +2,7 @@ FROM caddy:2.8.4-builder as builder
 
 RUN xcaddy build \
     --with github.com/ss098/certmagic-s3 \
-    --with github.com/lucaslorentz/caddy-docker-proxy@v2.8.4
+    --with github.com/lucaslorentz/caddy-docker-proxy@v2.9.1
 
 FROM caddy:2.8.4
 
