@@ -3,6 +3,16 @@ name: pr
 on: pull_request
 
 jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: updatecli/updatecli-action@v2
+    - run: updatecli diff --config ./updatecli/updatecli.d
+      env:
+        UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
+        UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build:
     runs-on: ubuntu-latest
     steps:
