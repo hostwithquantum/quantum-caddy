@@ -1,0 +1,25 @@
+name: update
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: '0 0 * * *'
+
+permissions:
+  contents: "write"
+  pull-requests: "write"
+
+jobs:
+  updatecli:
+    runs-on: "ubuntu-latest"
+    steps:
+    - uses: actions/checkout@v4
+    - uses: updatecli/updatecli-action@v2
+    - run: updatecli diff --config ./updatecli/updatecli.d
+      env:
+        UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
+        UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: updatecli apply --debug --config ./updatecli/updatecli.d
+      env:
+        UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
+        UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

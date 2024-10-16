@@ -1,8 +1,10 @@
 FROM caddy:2.8.4-builder as builder
 
+ARG CDP_VERSION=v2.9.1
+
 RUN xcaddy build \
     --with github.com/ss098/certmagic-s3 \
-    --with github.com/lucaslorentz/caddy-docker-proxy@v2.9.1
+    --with github.com/lucaslorentz/caddy-docker-proxy@${CDP_VERSION}
 
 FROM caddy:2.8.4
 
