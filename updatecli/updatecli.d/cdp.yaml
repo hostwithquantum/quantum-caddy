@@ -1,0 +1,48 @@
+name: Update caddy-docker-proxy from upstream
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: hostwithquantum
+      email: team+updates@planetary-quantum.com
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_ACTOR" }}'
+      owner: "hostwithquantum"
+      repository: "quantum-caddy"
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      branch: "main"
+
+sources:
+  cdp:
+    name: Get latest release
+    kind: githubrelease
+    spec:
+      owner: "lucaslorentz"
+      repository: "caddy-docker-proxy"
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      versionfilter:
+        kind: latest
+
+targets:
+  dockerfile:
+    name: Update Dockerfile ARG CDP_VERSION
+    kind: dockerfile
+    scmid: default
+    sourceid: cdp
+    spec:
+      file: Dockerfile
+      instruction:
+        keyword: ARG
+        matcher: CDP_VERSION
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: 'Update caddy-docker-proxy version to {{ source "cdp" }}'
+    spec:
+      automerge: false
+      draft: false
+      labels:
+      - dependencies
+      - enhancement
