@@ -30,7 +30,7 @@ targets:
     scmid: default
     sourceid: cdp
     spec:
-      file: Dockerfile
+      file: rootfs/Dockerfile
       instruction:
         keyword: ARG
         matcher: CDP_VERSION
