@@ -9,6 +9,7 @@ RUN xcaddy build \
 FROM caddy:2.8.4
 
 LABEL org.opencontainers.image.description "A Caddy reverse proxy with s3 storage for certmagic, service discovery via labels"
+LABEL org.opencontainers.image.source="https://github.com/hostwithquantum/quantum-caddy"
 
 ENV S3_BUCKET ""
 ENV S3_ACCESS_ID ""

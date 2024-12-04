@@ -20,7 +20,9 @@ jobs:
     - id: meta
       uses: docker/metadata-action@v5
       with:
-        images: r.planetary-quantum.com/quantum-public/${{ github.repository }}
+        images: |
+          r.planetary-quantum.com/quantum-public/caddy
+          ghcr.io/hostwithquantum/quantum-caddy
     - uses: docker/build-push-action@v6
       with:
         context: rootfs
