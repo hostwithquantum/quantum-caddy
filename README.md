@@ -9,10 +9,10 @@ Modules/plugins:
 
 ## Images
 
-Images are available and free to use for anyone. To download and use an image:
+Images are available on Github or on our registry, and free to use for anyone. To download and use an image:
 
 ```sh
-$ docker pull r.planetary-quantum.com/quantum-public/hostwithquantum/quantum-caddy@TAG
+$ docker pull r.planetary-quantum.com/quantum-public/caddy@TAG
 ```
 
-> Note: The docker tags match release tags in this repository.
+> Note: The docker tags match release tags in this repository. The follow the format of `vCADDY+pq.X`.
