@@ -1,4 +1,4 @@
-FROM caddy:2.8.4-builder as builder
+FROM caddy:2.9.1-builder as builder
 
 ARG CDP_VERSION=v2.9.1
 
@@ -6,7 +6,7 @@ RUN xcaddy build \
     --with github.com/ss098/certmagic-s3 \
     --with github.com/lucaslorentz/caddy-docker-proxy@${CDP_VERSION}
 
-FROM caddy:2.8.4
+FROM caddy:2.9.1
 
 LABEL org.opencontainers.image.description "A Caddy reverse proxy with s3 storage for certmagic, service discovery via labels"
 LABEL org.opencontainers.image.source="https://github.com/hostwithquantum/quantum-caddy"
