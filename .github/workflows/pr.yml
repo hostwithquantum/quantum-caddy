@@ -6,7 +6,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: updatecli/updatecli-action@v2
     - run: updatecli diff --config ./updatecli/updatecli.d
       env:
@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - id: meta
       uses: docker/metadata-action@v5
       with:
