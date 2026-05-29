@@ -1,6 +1,6 @@
 FROM caddy:2.11.3-builder as builder
 
-ARG CDP_VERSION=v2.10.0
+ARG CDP_VERSION=v2.12.0
 
 RUN xcaddy build \
     --with github.com/ss098/certmagic-s3 \
