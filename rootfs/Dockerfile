@@ -8,17 +8,17 @@ RUN xcaddy build \
 
 FROM caddy:2.11.3
 
-LABEL org.opencontainers.image.description "A Caddy reverse proxy with s3 storage for certmagic, service discovery via labels"
+LABEL org.opencontainers.image.description="A Caddy reverse proxy with s3 storage for certmagic, service discovery via labels"
 LABEL org.opencontainers.image.source="https://github.com/hostwithquantum/quantum-caddy"
 
-ENV S3_BUCKET ""
-ENV S3_ACCESS_ID ""
-ENV S3_SECRET_KEY ""
+#ENV S3_BUCKET ""
+#ENV S3_ACCESS_ID ""
+#ENV S3_SECRET_KEY ""
 
 # optional
-ENV S3_HOST "s3.storage.planetary-networks.de"
-ENV S3_PREFIX ""
-ENV S3_INSECURE "false"
+#ENV S3_HOST "s3.storage.planetary-networks.de"
+#ENV S3_PREFIX ""
+#ENV S3_INSECURE "false"
 
 WORKDIR /
 ADD . .
