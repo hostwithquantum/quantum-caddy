@@ -1,31 +1,52 @@
 name: pr
 
-on: pull_request
+on:
+  pull_request:
 
 jobs:
-  update:
+  check:
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-    - uses: updatecli/updatecli-action@v2
-    - run: updatecli diff --config ./updatecli/updatecli.d
-      env:
-        UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
-        UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: zizmorcore/zizmor-action@a16621b09c6db4281f81a93cb393b05dcd7b7165 # v0.5.5
+
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: updatecli/updatecli-action@7fea18dfb6a2d7077cd040e48ed658009bee5c6f # v2
+      - run: updatecli diff --config ./updatecli/updatecli.d
+        env:
+          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
+          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-    - uses: actions/checkout@v6
-    - id: meta
-      uses: docker/metadata-action@v6
-      with:
-        images: |
-          r.planetary-quantum.com/quantum-public/caddy
-          ghcr.io/hostwithquantum/quantum-caddy
-    - uses: docker/build-push-action@v7
-      with:
-        context: rootfs
-        push: false
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - id: meta
+        uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9 # v6.1.0
+        with:
+          images: |
+            r.planetary-quantum.com/quantum-public/caddy
+            ghcr.io/hostwithquantum/quantum-caddy
+      - uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        with:
+          context: rootfs
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
