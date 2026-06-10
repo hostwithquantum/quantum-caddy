@@ -13,12 +13,15 @@ jobs:
   updatecli:
     runs-on: "ubuntu-latest"
     steps:
-    - uses: updatecli/updatecli-action@7fea18dfb6a2d7077cd040e48ed658009bee5c6f # v2
-    - run: updatecli pipeline diff --config ./updatecli/updatecli.d
-      env:
-        UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
-        UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: updatecli pipeline apply --debug --config ./updatecli/updatecli.d
-      env:
-        UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
-        UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: updatecli/updatecli-action@7fea18dfb6a2d7077cd040e48ed658009bee5c6f # v2
+      - run: updatecli pipeline diff --config ./updatecli/updatecli.d
+        env:
+          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
+          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: updatecli pipeline apply --debug --config ./updatecli/updatecli.d
+        env:
+          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
+          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
