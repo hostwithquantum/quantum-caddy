@@ -1,0 +1,51 @@
+name: Update caddy base image from upstream
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: hostwithquantum
+      email: team+updates@planetary-quantum.com
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_ACTOR" }}'
+      owner: "hostwithquantum"
+      repository: "quantum-caddy"
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      branch: "main"
+
+sources:
+  caddy:
+    name: Get latest caddy release
+    kind: githubrelease
+    transformers:
+      - trimprefix: "v"
+    spec:
+      owner: "caddyserver"
+      repository: "caddy"
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      versionfilter:
+        kind: semver
+        pattern: "~2"
+
+targets:
+  dockerfile:
+    name: Update Dockerfile ARG CADDY_VERSION
+    kind: dockerfile
+    scmid: default
+    sourceid: caddy
+    spec:
+      file: rootfs/Dockerfile
+      instruction:
+        keyword: ARG
+        matcher: CADDY_VERSION
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: 'Update caddy base image to {{ source "caddy" }}'
+    spec:
+      automerge: false
+      draft: false
+      labels:
+      - dependencies
+      - enhancement
