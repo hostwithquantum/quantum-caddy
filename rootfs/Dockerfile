@@ -10,7 +10,7 @@ RUN xcaddy build \
 
 FROM caddy:${CADDY_VERSION}
 
-ARG CADDY_VERSION
+ARG CADDY_VERSION=2.11.4
 ARG CDP_VERSION
 
 LABEL org.opencontainers.image.description="A Caddy reverse proxy with caddy-docker-proxy for service discovery via labels and s3 storage for certmagic."
