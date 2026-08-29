@@ -24,14 +24,14 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: updatecli/updatecli-action@dacff74364eff019d33da0293b179b36f46b6aae # v2
+      - uses: updatecli/updatecli-action@1eb8adad417af85b6910e077c7fff0c23f2ef7f4 # v2
       - run: updatecli pipeline diff --config ./updatecli/updatecli.d
         env:
           UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build:
-    uses: docker/github-builder/.github/workflows/build.yml@a492c6d04fd3315f67230809b44d60cc0acd50b3 # v1.16.0
+    uses: docker/github-builder/.github/workflows/build.yml@58cb9f5b71b1836d6f690c1e95effdeb9b98cb8a # v1.17.0
     permissions:
       contents: read
       id-token: write
