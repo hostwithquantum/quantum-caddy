@@ -3,7 +3,9 @@
 image := r.planetary-quantum.com/quantum-public/caddy:dev
 
 build:
-	docker build -t $(image) -f rootfs/Dockerfile rootfs/
+	docker buildx build \
+		--platform linux/amd64 \
+		-t $(image) -f rootfs/Dockerfile rootfs/
 
 clean:
 	docker stack rm caddy-local-dev

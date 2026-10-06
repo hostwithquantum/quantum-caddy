@@ -41,7 +41,6 @@ actions:
     scmid: default
     title: 'Update caddy-docker-proxy version to {{ source "cdp" }}'
     spec:
-      automerge: false
       draft: false
       labels:
       - dependencies
