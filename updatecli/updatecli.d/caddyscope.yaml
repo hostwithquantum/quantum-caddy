@@ -1,0 +1,47 @@
+name: Update caddyscope from upstream
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: hostwithquantum
+      email: team+updates@planetary-quantum.com
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_ACTOR" }}'
+      owner: "hostwithquantum"
+      repository: "quantum-caddy"
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      branch: "main"
+
+sources:
+  caddyscope:
+    name: Get latest release
+    kind: githubrelease
+    spec:
+      owner: "luzilla"
+      repository: "caddyscope"
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      versionfilter:
+        kind: latest
+
+targets:
+  dockerfile:
+    name: Update Dockerfile ARG CADDYSCOPE_VERSION
+    kind: dockerfile
+    scmid: default
+    sourceid: caddyscope
+    spec:
+      file: rootfs/Dockerfile
+      instruction:
+        keyword: ARG
+        matcher: CADDYSCOPE_VERSION
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: 'Update caddyscope version to {{ source "caddyscope" }}'
+    spec:
+      draft: false
+      labels:
+      - dependencies
+      - enhancement
