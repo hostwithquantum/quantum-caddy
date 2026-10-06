@@ -1,13 +1,9 @@
 {
-	debug
 	admin localhost:2019
 	log default {
 		output stdout
 		format console
 		include http.log.access admin.api
-	}
-	servers {
-		metrics
 	}
 }
 
