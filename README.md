@@ -6,6 +6,7 @@ Modules/plugins:
 
 * [certmagic-s3](https://github.com/ss098/certmagic-s3)
 * [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy/)
+* [caddyscope](https://github.com/Luzilla/caddyscope)
 
 ## Images
 

@@ -44,7 +44,6 @@ actions:
     scmid: default
     title: 'Update caddy base image to {{ source "caddy" }}'
     spec:
-      automerge: false
       draft: false
       labels:
       - dependencies
