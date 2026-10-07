@@ -2,16 +2,19 @@
 
 image := r.planetary-quantum.com/quantum-public/caddy:dev
 
+# builds both flavors, see docker-bake.hcl
+# single flavor: make build target=caddy-caddyscope
+target ?= default
+
 build:
-	docker buildx build \
-		--platform linux/amd64 \
-		-t $(image) -f rootfs/Dockerfile rootfs/
+	docker buildx bake --load $(target)
 
 clean:
 	docker stack rm caddy-local-dev
 
 publish: build
 	docker push $(image)
+	docker push $(image)-caddyscope
 
 run-dev: build
 	docker network create \
