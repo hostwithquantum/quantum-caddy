@@ -3,6 +3,14 @@ ARG CADDY_VERSION=2.11.7
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
 ARG CDP_VERSION=v2.13.1
+
+RUN xcaddy build \
+    --with github.com/ss098/certmagic-s3 \
+    --with github.com/lucaslorentz/caddy-docker-proxy@${CDP_VERSION}
+
+FROM caddy:${CADDY_VERSION}-builder AS builder-caddyscope
+
+ARG CDP_VERSION=v2.13.1
 ARG CADDYSCOPE_VERSION=v0.1.0
 
 RUN xcaddy build \
@@ -10,18 +18,16 @@ RUN xcaddy build \
     --with github.com/lucaslorentz/caddy-docker-proxy@${CDP_VERSION} \
     --with github.com/luzilla/caddyscope@${CADDYSCOPE_VERSION}
 
-FROM caddy:${CADDY_VERSION}
+FROM caddy:${CADDY_VERSION} AS base
 
 ARG CADDY_VERSION=2.11.7
 ARG CDP_VERSION=v2.13.1
-ARG CADDYSCOPE_VERSION=v0.1.0
 
 LABEL org.opencontainers.image.description="A Caddy reverse proxy with caddy-docker-proxy for service discovery via labels and s3 storage for certmagic."
 LABEL org.opencontainers.image.source="https://github.com/hostwithquantum/quantum-caddy"
 LABEL org.opencontainers.image.version="${CADDY_VERSION}"
 LABEL com.quantum.caddy.version="${CADDY_VERSION}"
 LABEL com.quantum.caddy-docker-proxy.version="${CDP_VERSION}"
-LABEL com.quantum.caddyscope.version="${CADDYSCOPE_VERSION}"
 
 #ENV S3_BUCKET ""
 #ENV S3_ACCESS_ID ""
@@ -37,7 +43,19 @@ ADD . .
 
 WORKDIR /srv
 
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
-
 ENTRYPOINT [ "/usr/bin/caddy" ]
 CMD ["docker-proxy", "--caddyfile-path=/etc/quantum-caddy/Caddyfile", "--ingress-networks=public"]
+
+# default flavor
+FROM base AS caddy
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+
+# -caddyscope flavor
+FROM base AS caddy-caddyscope
+
+ARG CADDYSCOPE_VERSION=v0.1.0
+
+LABEL com.quantum.caddyscope.version="${CADDYSCOPE_VERSION}"
+
+COPY --from=builder-caddyscope /usr/bin/caddy /usr/bin/caddy

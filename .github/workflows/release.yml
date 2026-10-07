@@ -8,6 +8,13 @@ on:
 jobs:
   build_push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - target: caddy
+            suffix: ""
+          - target: caddy-caddyscope
+            suffix: "-caddyscope"
     permissions:
       contents: read
       packages: write
@@ -42,21 +49,26 @@ jobs:
           images: |
             r.planetary-quantum.com/quantum-public/caddy
             ghcr.io/hostwithquantum/quantum-caddy
+          flavor: |
+            suffix=${{ matrix.suffix }},onlatest=true
+          bake-target: ${{ matrix.target }}
       - id: build
-        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        uses: docker/bake-action@018cb6412ab401ebaa809aa5f85966b74628600f # v7.4.0
         with:
-          context: rootfs/
+          source: .
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.meta.outputs.bake-file }}
+          targets: ${{ matrix.target }}
           push: true
           sbom: true
           provenance: mode=max
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
       - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
         with:
           cosign-release: 'v2.4.1'
       - name: Sign images
         env:
-          DIGEST: ${{ steps.build.outputs.digest }}
+          DIGEST: ${{ fromJSON(steps.build.outputs.metadata)[matrix.target]['containerimage.digest'] }}
           TAGS: ${{ steps.meta.outputs.tags }}
         run: |
           echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
