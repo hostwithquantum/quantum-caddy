@@ -11,7 +11,7 @@ RUN xcaddy build \
 FROM caddy:${CADDY_VERSION}-builder AS builder-caddyscope
 
 ARG CDP_VERSION=v2.13.1
-ARG CADDYSCOPE_VERSION=v0.1.0
+ARG CADDYSCOPE_VERSION=v0.1.1
 
 RUN xcaddy build \
     --with github.com/ss098/certmagic-s3 \
@@ -54,7 +54,7 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 # -caddyscope flavor
 FROM base AS caddy-caddyscope
 
-ARG CADDYSCOPE_VERSION=v0.1.0
+ARG CADDYSCOPE_VERSION=v0.1.1
 
 LABEL com.quantum.caddyscope.version="${CADDYSCOPE_VERSION}"
 
